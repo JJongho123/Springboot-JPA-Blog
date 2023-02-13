@@ -24,14 +24,3 @@
 
 <%@ include file="../layout/footer.jsp"%>
 
-
-
-	</form>
-		
-
-</div>
-
-
-
-<%@ include file="../layout/footer.jsp"%>
-
