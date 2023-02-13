@@ -20,6 +20,7 @@ public class SecurityConfig {
 
 
 	
+	
 	@Bean // IoC가 되요!!
 	public BCryptPasswordEncoder encodePWD() {
 		return new BCryptPasswordEncoder();
