@@ -22,17 +22,14 @@ public class UserApiController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired(required=false)
+	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-	
 	@PostMapping("/auth/joinProc")
-	public ResponseDto<Integer> save(@RequestBody User user) {
-		System.out.println("UserApiController : save 호출!!");
-		// 실제로 DB에 insert를 하고 아래에서 return이 되면된다.
-		
+	public ResponseDto<Integer> save(@RequestBody User user) { // username, password, email
+		System.out.println("UserApiController : save 호출됨");
 		userService.회원가입(user);
-		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바오브젝트를 JSON으로 변환해서 리턴(Jackson)
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바오브젝트를 JSON으로 변환해서 리턴 (Jackson)
 	}
 
 	@PutMapping("/user")
@@ -41,26 +38,11 @@ public class UserApiController {
 		// 여기서는 트랜잭션이 종료되기 때문에 DB에 값은 변경이 됐음.
 		// 하지만 세션값은 변경되지 않은 상태이기 때문에 우리가 직접 세션값을 변경해줄 것임.
 		// 세션 등록
-		System.out.println("pwd : " + user.getPassword());
-		System.out.println("username : " + user.getUsername());
-	
+
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
-
-	/*
-	 * @PostMapping("/api/user/login") public ResponseDto<Integer>
-	 * login(@RequestBody User user, HttpSession session) {
-	 * System.out.println("UserApiController  : login호출됨. "); // principal (접근주체)
-	 * User principal = userService.로그인(user);
-	 * 
-	 * if (principal != null) { session.setAttribute("principal", principal); }
-	 * 
-	 * return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
-	 * 
-	 * }
-	 */
 
 }
